@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <script src="https://aframe.io/releases/1.0.3/aframe.min.js"></script>
+  <script src="main.js" charset="utf-8"></script>
+
+  <title>rubiks cube start test</title>
+</head>
+<body>
+  <a-scene class="js--scene">
+    <a-assets>
+      <a-asset-item id="bank-glb" src="/img/furniture/bank.glb"></a-asset-item>
+      <a-asset-item id="bureau-glb" src="/img/furniture/bureau.glb"></a-asset-item>
+      <a-asset-item id="klok-glb" src="/img/furniture/klok.glb"></a-asset-item>
+      <a-asset-item id="nachtkastje-glb" src="/img/furniture/nachtkastje.glb"></a-asset-item>
+      <a-asset-item id="bookcase-glb" src="/img/furniture/bookcase.glb"></a-asset-item>
+      <a-asset-item id="bed-glb" src="/img/furniture/bed.glb"></a-asset-item>
+      <a-asset-item id="kast-glb" src="/img/furniture/kast.glb"></a-asset-item>
+      <a-asset-item id="chair-glb" src="/img/furniture/chair.glb"></a-asset-item>
+      <a-asset-item id="pijl-obj" src="/img/pijl.obj"></a-asset-item>
+      <a-asset-item id="pijl-mtl" src="/img/pijl.mtl"></a-asset-item>
+
+
+
+    </a-assets>
+    <a-sky color="white"></a-sky>
+
+    <a-camera>
+      <a-cursor color="#f" material="opacity: 0.5"></a-cursor>
+    </a-camera>
+
+    <a-plane color="white" rotation="-90 0 0" width="8" height="8"></a-plane>
+    <a-plane color="red"  rotation="-90 0 0" width="4" height="4" position="-1 0.1 1"></a-plane>
+    <a-plane color="gray" rotation=" 0 90 0" width="8" height="3" position="-4 1.5 0"></a-plane>
+    <a-plane color="gray" rotation="0 180 0" width="8" height="3" position="0 1.5 4"></a-plane>
+    <a-plane color="gray" rotation="0 0 0" width="8" height="3" position="0 1.5 -4"></a-plane>
+    <a-plane color="gray" rotation="0 270 0" width="8" height="3" position="4 1.5 0"></a-plane>
+
+    <a-entity class="js--bank" position="-4.9 0.1 -3.6" gltf-model="#bank-glb" scale="0.5 0.5 0.5"></a-entity>
+    <a-entity class="js--klok" position="-0.8 0.1 -2.8" gltf-model="#klok-glb" scale="0.4 0.4 0.4"></a-entity>
+    <a-entity class="js--bureau" position="2.5 0 -3.8" gltf-model="#bureau-glb" scale="0.5 0.5 0.5"></a-entity>
+    <a-entity class="js--nachtkastje" position="-5.4 0 4.1" gltf-model="#nachtkastje-glb" scale="0.5 0.5 0.5" rotation="0 180 0"></a-entity>
+    <a-entity class="js--nachtkastje" position="-2.4 0 4.1" gltf-model="#nachtkastje-glb" scale="0.5 0.5 0.5" rotation="0 180 0"></a-entity>
+    <a-entity class="js--bookcase" position="3.5 0 0" gltf-model="#bookcase-glb" scale="0.5 0.5 0.5" rotation="0 90 0"></a-entity>
+    <a-entity class="js--bed" position="-1.2 -0.3 4" gltf-model="#bed-glb" scale="0.45 0.45 0.45" rotation="0 90 0"></a-entity>
+    <a-entity class="js--kast" position="-3.7 1.2 -1" gltf-model="#kast-glb" scale="0.55 0.55 0.55" rotation="0 270 0"></a-entity>
+    <a-entity class="js--chair" position="2.5 0.5 -2.8" gltf-model="#chair-glb" scale="0.3 0.3 0.3" rotation="0 0 0"></a-entity>
+
+
+
+  </a-scene>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <script src="https://aframe.io/releases/1.0.3/aframe.min.js"></script>
+  <script src="main.js" charset="utf-8"></script>
+
+  <title>rubiks cube start test</title>
+</head>
+<body>
+  <a-scene class="js--scene">
+    <a-sky color="white"></a-sky>
+
+    <a-camera>
+      <a-cursor color="#fff" material="opacity: 0.5"></a-cursor>
+    </a-camera>
+
+  <a-plane color="gray" rotation="-90 0 0" width="8" height="8"></a-plane>
+  <a-plane color="gray" rotation=" 0 90 0" width="8" height="3" position="-4 1.5 0"></a-plane>
+  <a-plane color="gray" rotation="0 180 0" width="8" height="3" position="0 1.5 4"></a-plane>
+  <a-plane color="gray" rotation="0 0 0" width="8" height="3" position="0 1.5 -4"></a-plane>
+  <a-plane color="gray" rotation="0 270 0" width="8" height="3" position="4 1.5 0"></a-plane>
+
+
+
+
+
+  </a-scene>
+</body>
+</html>

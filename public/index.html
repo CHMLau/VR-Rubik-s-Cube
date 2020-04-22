@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <script src="https://aframe.io/releases/1.0.0/aframe.min.js"></script>
+  <script src="https://unpkg.com/aframe-environment-component@1.1.0/dist/aframe-environment-component.min.js"></script>
+  <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script>
+  <script src="main.js" charset="utf-8"></script>
+  <!-- <script src="cube.js" charset="uft-8"></script> -->
+
+  <title>rubiks cube VR</title>
+</head>
+
+<body>
+  <a-scene class="js--scene">
+    <a-entity id="js--rig">
+      <a-camera>
+        <a-cursor animation__fusing= "property: scale; easing: easeInCubic; dur: 750; from: 1 1 1; to: 0.1 0.1 0.1; startEvents: fusing"
+        animation__mouseleave= "property: scale; easing: easeInCubic; dur: 500;  to: 1 1 1; startEvents: mouseleave"
+        animation__click= "property: scale; easing: easeInCubic; dur: 500; from: 0.1 0.1 0.1; to: 1 1 1; startEvents: click"
+        cursor="fuse: true; fuseTimeout: 750;"
+        material="color: white; shader: flat; opacity: 0.5;"
+        geometry="primitive: ring; radiusInner: 0.005; radiusOuter: 0.01;"
+        position="0 0 -0.5"
+        raycaster="objects: .clickable"></a-cursor>
+        <a-entity material="color: black; shader: flat;" geometry="primitive: ring; radiusInner: 0.002; radiusOuter: 0.005;" position="0 0 -0.5"></a-entity>
+        <a-plane id="js--info" color="gray" width="1.25" height="0.5" position="0 -0.45 -1" material="opacity: 0.8" scale="0.75 0.75 0.75">
+          <a-text letterSpacing="3.75" id="js--explaneLineOne" color="black" value="Stap 1:" position="0 0.15 0.01" align="center" width="1.25" material="opacity: 1" transparent="false"></a-text>
+          <a-text letterSpacing="3.75" id="js--explaneLineTwo" color="black" value="Kijk naar de kubus, kijk daar naar het middelste blokje van het voorste vlak"  position="0 0 0.01" align="center" width="1.25" material="opacity: 1" transparent="false" ></a-text>
+        </a-plane>
+
+      </a-camera>
+    </a-entity>
+
+    <a-sky color="black"></a-sky>
+    <a-entity environment="preset:starry" id="js--environment"></a-entity>
+
+    <a-plane color="gray" width="1.25" height="1" material="opacity: 0.8" position="-2.5 1 -1" transparent="false"  rotation="0 60 0">
+      <a-text letterSpacing="3.75" value="TIP 1:" color="black" material="opacity: 1;" position="0 0.4 0.01" align="center" scale="0.4 0.4 0.4" transparent="false" ></a-text>
+      <a-text letterSpacing="3.75" value="klik op het middelste vierkant \n om de zijde te draaien" color="black" material="opacity: 1;" position="0 0.25 0.01" align="center" scale="0.4 0.4 0.4" transparent="false" ></a-text>
+
+      <a-text letterSpacing="3.75" value="TIP 2:" color="black" material="opacity: 1;" position="0 0 0.01" align="center" scale="0.4 0.4 0.4" transparent="false" ></a-text>
+      <a-text letterSpacing="3.75" value="klik op de zijdes rechts\n om de kubus te draaien" color="black" material="opacity: 1;" position="0 -0.15 0.01" align="center" scale="0.4 0.4 0.4" transparent="false" ></a-text>
+
+    </a-plane>
+
+    <!-- Cube -->
+    <a-entity id="js--parentCube">
+      <a-entity id="js--cube" static-body position="0 0.5 -1.5" rotation="0 0 0" scale="0.1 0.1 0.1">
+        <a-entity class="js--arm" corner>
+          <a-plane static-body color="red" position="-1 1 1.5" scale="0.9 0.9 0.9" ></a-plane>
+          <a-plane static-body color="blue" position="-1 1.5 1" rotation="270 0 0" scale="0.9 0.9 0.9" ></a-plane>
+          <a-plane static-body color="white" position="-1.5 1 1" rotation="0 270 0" scale="0.9 0.9 0.9" ></a-plane>
+        </a-entity>
+        <a-entity class="js--arm" edge>
+          <a-plane static-body color="red" position="0 1 1.5" scale="0.9 0.9 0.9" ></a-plane>
+          <a-plane static-body color="blue" position="0 1.5 1" rotation="270 0 0" scale="0.9 0.9 0.9" ></a-plane>
+        </a-entity>
+        <a-entity class="js--arm" corner>
+          <a-plane static-body color="red" position="1 1 1.5" scale="0.9 0.9 0.9" ></a-plane>
+          <a-plane static-body color="blue" position="1 1.5 1" rotation="270 0 0" scale="0.9 0.9 0.9" ></a-plane>
+          <a-plane static-body color="yellow" position="1.5 1 1" rotation="0 90 0" scale="0.9 0.9 0.9" ></a-plane>
+        </a-entity>
+        <a-entity class="js--arm" edge>
+          <a-plane static-body color="red" position="-1 0 1.5" scale="0.9 0.9 0.9" ></a-plane>
+          <a-plane static-body color="white" position="-1.5 0 1" rotation="0 270 0" scale="0.9 0.9 0.9" ></a-plane>
+        </a-entity>
+        <a-entity class="js--arm" center>
+          <a-plane class="js--center clickable" static-body color="red" position="0 0 1.5" scale="0.9 0.9 0.9" data-rotatation_axis="z"></a-plane>
+        </a-entity>
+        <a-entity class="js--arm" edge>
+          <a-plane static-body color="red" position="1 0 1.5" scale="0.9 0.9 0.9" ></a-plane>
+          <a-plane static-body color="yellow" position="1.5 0 1" rotation="0 90 0" scale="0.9 0.9 0.9" ></a-plane>
+        </a-entity>
+        <a-entity class="js--arm" corner>
+          <a-plane static-body color="red" position="-1 -1 1.5" scale="0.9 0.9 0.9" ></a-plane>
+          <a-plane static-body color="green" position="-1 -1.5 1" rotation="90 0 0" scale="0.9 0.9 0.9" ></a-plane>
+          <a-plane static-body color="white" position="-1.5 -1 1" rotation="0 270 0" scale="0.9 0.9 0.9" ></a-plane>
+        </a-entity>
+        <a-entity class="js--arm" edge>
+          <a-plane static-body color="red" position="0 -1 1.5" scale="0.9 0.9 0.9" ></a-plane>
+          <a-plane static-body color="green" position="0 -1.5 1" rotation="90 0 0" scale="0.9 0.9 0.9" ></a-plane>
+        </a-entity>
+        <a-entity class="js--arm" corner>
+          <a-plane static-body color="red" position="1 -1 1.5" scale="0.9 0.9 0.9" ></a-plane>
+          <a-plane static-body color="yellow" position="1.5 -1 1" rotation="0 90 0" scale="0.9 0.9 0.9" ></a-plane>
+          <a-plane static-body color="green" position="1 -1.5 1" rotation="90 0 0" scale="0.9 0.9 0.9" ></a-plane>
+        </a-entity>
+        <a-entity class="js--arm" edge>
+          <a-plane static-body color="blue" position="-1 1.5 0" rotation="270 0 0" scale="0.9 0.9 0.9" ></a-plane>
+          <a-plane static-body color="white" position="-1.5 1 0" rotation="0 270 0" scale="0.9 0.9 0.9" ></a-plane>
+        </a-entity>
+        <a-entity class="js--arm" center>
+          <a-plane class="js--center clickable" static-body color="blue" position="0 1.5 0" rotation="270 0 0" scale="0.9 0.9 0.9" data-rotatation_axis="y"></a-plane>
+        </a-entity>
+        <a-entity class="js--arm" edge>
+          <a-plane static-body color="blue" position="1 1.5 0" rotation="270 0 0" scale="0.9 0.9 0.9" ></a-plane>
+          <a-plane static-body color="yellow" position="1.5 1 0" rotation="0 90 0" scale="0.9 0.9 0.9" ></a-plane>
+        </a-entity>
+        <a-entity class="js--arm" corner>
+          <a-plane static-body color="blue" position="-1 1.5 -1" rotation="270 0 0" scale="0.9 0.9 0.9" ></a-plane>
+          <a-plane static-body color="orange" position="-1 1 -1.5" rotation="180 0 0" scale="0.9 0.9 0.9" ></a-plane>
+          <a-plane static-body color="white" position="-1.5 1 -1" rotation="0 270 0" scale="0.9 0.9 0.9" ></a-plane>
+        </a-entity>
+        <a-entity class="js--arm" edge>
+          <a-plane static-body color="blue" position="0 1.5 -1" rotation="270 0 0" scale="0.9 0.9 0.9" ></a-plane>
+          <a-plane static-body color="orange" position="0 1 -1.5" rotation="180 0 0" scale="0.9 0.9 0.9" ></a-plane>
+        </a-entity>
+        <a-entity class="js--arm" corner>
+          <a-plane static-body color="blue" position="1 1.5 -1" rotation="270 0 0" scale="0.9 0.9 0.9" ></a-plane>
+          <a-plane static-body color="yellow" position="1.5 1 -1" rotation="0 90 0" scale="0.9 0.9 0.9" ></a-plane>
+          <a-plane static-body color="orange" position="1 1 -1.5" rotation="180 0 0" scale="0.9 0.9 0.9" scale="0.9 0.9 0.9" ></a-plane>
+        </a-entity>
+        <a-entity class="js--arm" center>
+          <a-plane class="js--center clickable" static-body color="yellow" position="1.5 0 0" rotation="0 90 0" scale="0.9 0.9 0.9" data-rotatation_axis="x"></a-plane>
+        </a-entity>
+        <a-entity class="js--arm" edge>
+          <a-plane static-body color="yellow" position="1.5 0 -1" rotation="0 90 0" scale="0.9 0.9 0.9" ></a-plane>
+          <a-plane static-body color="orange" position="1 0 -1.5" rotation="180 0 0" scale="0.9 0.9 0.9" ></a-plane>
+        </a-entity>
+        <a-entity class="js--arm" edge>
+          <a-plane static-body color="yellow" position="1.5 -1 0" rotation="0 90 0" scale="0.9 0.9 0.9" ></a-plane>
+          <a-plane static-body color="green" position="1 -1.5 0" rotation="90 0 0" scale="0.9 0.9 0.9" ></a-plane>
+        </a-entity>
+        <a-entity class="js--arm" corner>
+          <a-plane static-body color="yellow" position="1.5 -1 -1" rotation="0 90 0" scale="0.9 0.9 0.9" ></a-plane>
+          <a-plane static-body color="orange" position="1 -1 -1.5" rotation="180 0 0" scale="0.9 0.9 0.9" ></a-plane>
+          <a-plane static-body color="green" position="1 -1.5 -1" rotation="90 0 0" scale="0.9 0.9 0.9" ></a-plane>
+        </a-entity>
+        <a-entity class="js--arm" center>
+          <a-plane class="js--center clickable" static-body color="orange" position="0 0 -1.5" rotation="180 0 0" scale="0.9 0.9 0.9" data-rotatation_axis="z"></a-plane>
+        </a-entity>
+        <a-entity class="js--arm" edge>
+          <a-plane static-body color="orange" position="0 -1 -1.5" rotation="180 0 0" scale="0.9 0.9 0.9" ></a-plane>
+          <a-plane static-body color="green" position="0 -1.5 -1" rotation="90 0 0" scale="0.9 0.9 0.9" ></a-plane>
+        </a-entity>
+        <a-entity class="js--arm" corner>
+          <a-plane static-body color="orange" position="-1 -1 -1.5" rotation="180 0 0" scale="0.9 0.9 0.9" ></a-plane>
+          <a-plane static-body color="green" position="-1 -1.5 -1" rotation="90 0 0" scale="0.9 0.9 0.9" ></a-plane>
+          <a-plane static-body color="white" position="-1.5 -1 -1" rotation="0 270 0" scale="0.9 0.9 0.9" ></a-plane>
+        </a-entity>
+        <a-entity class="js--arm" edge>
+          <a-plane static-body color="orange" position="-1 0 -1.5" rotation="180 0 0" scale="0.9 0.9 0.9" ></a-plane>
+          <a-plane static-body color="white" position="-1.5 0 -1" rotation="0 270 0" scale="0.9 0.9 0.9" ></a-plane>
+        </a-entity>
+        <a-entity class="js--arm" center>
+          <a-plane class="js--center clickable" static-body color="green" position="0 -1.5 0" rotation="90 0 0" scale="0.9 0.9 0.9" data-rotatation_axis="y"></a-plane>
+        </a-entity>
+        <a-entity class="js--arm" edge>
+          <a-plane static-body color="green" position="-1 -1.5 0" rotation="90 0 0" scale="0.9 0.9 0.9" ></a-plane>
+          <a-plane static-body color="white" position="-1.5 -1 0" rotation="0 270 0" scale="0.9 0.9 0.9" ></a-plane>
+        </a-entity>
+        <a-entity class="js--arm" center>
+          <a-plane class="js--center clickable" static-body color="white" position="-1.5 0 0" rotation="0 270 0" scale="0.9 0.9 0.9" data-rotatation_axis="x"></a-plane>
+        </a-entity>
+      </a-entity>
+    </a-entity>
+
+    <a-entity id="js--turnFaceUI" rotation="0 0 0" position="0 0.75 -1.5" visible="false" scale="0 0 0">
+      <a-entity class="js--turnArrow clickable" data-direction="right" geometry="primitive:ring; radiusInner: 0.8; radiusOuter: 0.65; thetaLength:110; thetaStart:110" material="opacity: 0.5; color: rgb(0,255,255); side:double;" rotation="0 180 0" position="0 0.25 -0.25">
+        <a-entity class="clickable" data-direction="right" geometry="primitive: triangle; vertexA: 0 0.15 0; vertexB: -0.15 -0.15 0; vertexC: 0.15 -0.15 0" material="side: double; opacity: 0.5; color: rgb(0,255,255)" rotation="0 0 -140.19" position="-0.46 -0.58 0"></a-entity>
+      </a-entity>
+      <a-entity class="js--turnArrow clickable" data-direction="left" geometry="primitive:ring; radiusInner: 0.8; radiusOuter: 0.65; thetaLength:110; thetaStart:110" material="opacity: 0.5; color: rgb(255,0,0); side:double;" rotation="0 180 0" position="0 0.25 -0.25" scale="-1 1 1">
+        <a-entity class="clickable" data-direction="left" geometry="primitive: triangle; vertexA: 0 0.15 0; vertexB: -0.15 -0.15 0; vertexC: 0.15 -0.15 0" material="side: double; opacity: 0.5; color: rgb(255,0,0)" rotation="0 0 -140.19" position="-0.46 -0.58 0"></a-entity>
+      </a-entity>
+    </a-entity>
+
+    <a-entity id="js--turnCubeUI" position="3 3 -2.5" rotation="0 300 0" scale="0.2 0.2 0.2" visible="false">
+      <a-text letterSpacing="3.75" position="0 6.5 0" value="top side:" color="white" scale="4 4 4" align="center"></a-text>
+      <a-entity class="js--turnCubeFace" position="0 4.5 0" data-side="top" scale="1 -1 1">
+        <a-plane class="js--turnCubeFace__plane clickable" position="-1 1 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="0 1 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="1 1 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="-1 0 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="0 0 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="1 0 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="-1 -1 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="0 -1 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="1 -1 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+      </a-entity>
+
+      <a-text letterSpacing="3.75" position="0 1.5 0" value="front side:" color="white" scale="4 4 4" align="center"></a-text>
+      <a-entity class="js--turnCubeFace" position="0 -0.5 0" data-side="front">
+        <a-plane class="js--turnCubeFace__plane clickable" position="-1 1 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="0 1 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="1 1 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="-1 0 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="0 0 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="1 0 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="-1 -1 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="0 -1 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="1 -1 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+      </a-entity>
+
+      <a-text letterSpacing="3.75" position="-5 1.5 0" value="left side:" color="white" scale="4 4 4" align="center"></a-text>
+      <a-entity class="js--turnCubeFace" position="-5 -0.5 0" data-side="left">
+        <a-plane class="js--turnCubeFace__plane clickable" position="-1 1 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="0 1 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="1 1 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="-1 0 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="0 0 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="1 0 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="-1 -1 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="0 -1 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="1 -1 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+      </a-entity>
+
+      <a-text letterSpacing="3.75" position="5 1.5 0" value="right side:" color="white" scale="4 4 4" align="center"></a-text>
+      <a-entity class="js--turnCubeFace" position="5 -0.5 0" data-side="right" scale="-1 1 1">
+        <a-plane class="js--turnCubeFace__plane clickable" position="-1 1 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="0 1 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="1 1 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="-1 0 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="0 0 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="1 0 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="-1 -1 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="0 -1 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="1 -1 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+      </a-entity>
+
+      <a-text letterSpacing="3.75" position="0 -3.5 0" value="bottom side:" color="white" scale="4 4 4" align="center"></a-text>
+      <a-entity class="js--turnCubeFace" position="0 -5.5 0" data-side="bottom">
+        <a-plane class="js--turnCubeFace__plane clickable" position="-1 1 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="0 1 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="1 1 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="-1 0 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="0 0 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="1 0 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="-1 -1 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="0 -1 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="1 -1 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+      </a-entity>
+
+      <a-text letterSpacing="3.75" position="0 -8.5 0" value="back side:" color="white" scale="4 4 4" align="center"></a-text>
+      <a-entity class="js--turnCubeFace" position="0 -10.5 0" data-side="back" scale="-1 1 1">
+        <a-plane class="js--turnCubeFace__plane clickable" position="-1 1 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="0 1 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="1 1 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="-1 0 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="0 0 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="1 0 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="-1 -1 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="0 -1 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+        <a-plane class="js--turnCubeFace__plane clickable" position="1 -1 0" color="blue" scale="0.9 0.9 0.9"></a-plane>
+      </a-entity>
+    </a-entity>
+
+    <a-assits>
+      <a-assit-item id="bank-glb" src="/img/furniture/bank.glb" timeout="30000"></a-assit-item>
+      <a-assit-item id="bureau-glb" src="/img/furniture/bureau.glb"></a-assit-item>
+      <a-assit-item id="klok-glb" src="/img/furniture/klok.glb" ></a-assit-item>
+      <a-assit-item id="nachtkastje-glb" src="/img/furniture/nachtkastje.glb"></a-assit-item>
+      <a-assit-item id="bookcase-glb" src="/img/furniture/bookcase.glb"></a-assit-item>
+      <a-assit-item id="bed-glb" src="/img/furniture/bed.glb"></a-assit-item>
+      <a-assit-item id="chair-glb" src="/img/furniture/chair.glb"></a-assit-item>
+      <a-assit-item id="table2-glb" src="/img/furniture/table2.glb"></a-assit-item>
+    </a-assits>
+
+  <!-- tutorial scherm deel -->
+    <a-entity light="angle: 90; type: spot; target: #js--cube" position="0 1 1.5"></a-entity>
+    <a-plane  id="js--tutorialbord" scale="0.5 0.5 0.5" position="-1.5 2 -2" color="#222" width="3" height="3" rotation="10 30 0" material="opacity: 0"></a-plane>
+    <a-entity id="js--spot-tutorial" light="type: spot; angle: 45; intensity: 0;" position="0.5 8 4" rotation="-50 0 0" ></a-entity>
+    <a-entity id="js--spot-level1" light="type: spot; angle: 45; intensity: 1;" position="-0.3 4 -3.3" rotation="-50 180 0" ></a-entity>
+    <a-entity id="js--video-tutorial" geometry="primitive:plane;" material="shader:gif;opacity:0" position="-1.5 2 -1.9" rotation="10 30 0"></a-entity>
+    <a-entity id="js--roomlight" rotation="-50 180 0" position="1 6 2.5"light="type: ambient; angle: 45; intensity: 0;"></a-entity>
+
+    <!-- Level 1 -->
+    <a-text letterSpacing="3.75" value="Level 1" color="white" rotation="0 180 0" position="2.3 2.4 4.995" align="center" width="2" scale="2 2 2"></a-text>
+    <a-text letterSpacing="3.75" value="klik op de deur \nom te beginnen" color="white" rotation="0 180 0" position="2.3 2 4.995" align="center" width="2" scale="2 2 2"></a-text>
+    <!-- <a-text letterSpacing="3.75" value="Ja" color="white" rotation="0 180 0" position="2.8 1.8 4.994" align="center" width="2" scale="2 2 2"></a-text>
+    <a-text letterSpacing="3.75" value="Nee" color="white" rotation="0 180 0" position="1.8 1.8 4.994" align="center" width="2" scale="2 2 2"></a-text> -->
+
+    <a-box id ="js--tapijt" class="js--place" src="/img/tapijt.jpg" position="-1 0 7.5" depth="4" width="4" height="0.1" material="shader:flat;"></a-box>
+
+    <!-- Muren en dergelijke -->
+    <a-plane class="muren" animation="" src="/img/vloer.jpg" rotation="270 0 0" width="8" height="8" position="0 0.026 9" material="shader:flat; side: double"></a-plane>
+    <a-plane class="muren" animation="" color="#e6d5c1" rotation="90 0 0" width="8" height="8" position="0 3 9" material="shader:flat; side: double"></a-plane>
+    <a-plane class="muren" animation="" color="#82754E" rotation=" 0 90 0" width="8" height="3" position="-4 1.5 9" material="shader:flat; side: double"></a-plane>
+
+    <a-plane class="muren" animation="" color="gray" rotation=" 0 90 0" width="1" height="1" position="-3.99 1.5 7.2" material="shader:flat; side: double" tijden>
+      <a-text letterSpacing="3.75" value="snelste tijd(WR):" scale="0.5 0.5 0.5" color="black" position="0.01 0.4 0" align="center" ></a-text>
+      <a-text letterSpacing="3.75" id="js--tijdPoster" value="zet CORS aan" scale="0.35 0.35 0.35" color="black" position="0.01 0.2 0" align="center" ></a-text>
+    </a-plane>
+
+    <a-plane class="muren" animation="" src="/img/behang.jpeg" rotation="0 180 0" width="8" height="3" position="0 1.5 13" material="shader:flat; side: double"></a-plane>
+    <a-plane class="muren" animation="" src="/img/poster1.png" rotation="0 270 0" width="2" height="2" position="3.99 1.9 10.1" material="shader:flat; side: double"></a-plane>
+    <a-plane class="muren" animation="" color="#82754E" rotation="0 270 0" width="5" height="3" position="4 1.5 10.5" material="shader:flat; side: double"></a-plane>
+    <a-plane class="muren" animation="" color="#82754E" rotation="0 270 0" width="2" height="3" position="4 1.5 6" material="shader:flat; side: double"></a-plane>
+    <a-plane class="muren" animation="" color="#82754E" rotation="0 270 0" width="1.2" height="1" position="4 0.5 7.5" material="shader:flat; side: double"></a-plane>
+    <a-plane class="muren" animation="" color="#82754E" rotation="0 270 0" width="1.2" height="1" position="4 2.5 7.5" material="shader:flat; side: double"></a-plane>
+    <a-plane class="muren" animation="" color="#b87416" rotation="0 0 0" width="4.5" height="3" position="1.75 1.5 5" material="side: double; shader:flat"></a-plane>
+    <a-plane class="muren" animation="" color="#b87416" rotation="0 0 0" width="2" height="3" position="-3 1.5 5" material="side: double; shader:flat"></a-plane>
+    <a-plane class="muren" animation="" color="#b87416" rotation="0 0 0" width="1.6" height="0.5" position="-1.3 2.75 4.99" material="side: double; shader:flat"></a-plane>
+    <a-plane class="muren" animation="" color="black" rotation="0 0 0" width="2" height="1" position="2.3 2.1 4.996" material="side: double; shader:flat"></a-plane>
+    <!-- <a-plane id="js--level1Ja" class="clickable" animation="" color="gray" rotation="0 0 0" width="0.5" height="0.25" position="2.8 1.8 4.995" material="side: double; shader:flat"></a-plane>
+    <a-plane id="js--level1Nee" class="clickable" animation="" color="gray" rotation="0 0 0" width="0.5" height="0.25" position="1.8 1.8 4.995" material="side: double; shader:flat"></a-plane> -->
+
+    <a-plane class="muren" animation="" color="#82754E" rotation="0 0 0" width="4.5" height="3" position="1.75 1.5 5.01" material="side: double; shader:flat"></a-plane>
+    <a-plane class="muren" animation="" color="#82754E" rotation="0 0 0" width="2" height="3" position="-3 1.5 5.01" material="side: double; shader:flat"></a-plane>
+    <a-plane class="muren" animation="" color="#82754E" rotation="0 0 0" width="1.6" height="0.5" position="-1.3 2.75 5.01" material="side: double; shader:flat"></a-plane>
+    <a-plane id="js--door" class="muren clickable" src="/img/Deur.jpg" rotation="0 0 0" width="1.6" height="2.5" position="-1.2 1.25 4.9" material="side: double; shader:flat"></a-plane>
+
+
+    <!-- kamer elementen -->
+    <a-entity id="bank" animation="" class="js--bank" position="4 0.1 12.6" gltf-model="#bank-glb" scale="0.5 0.5 0.5" rotation=" 0 180 0"></a-entity>
+    <!-- <a-entity id="js--klok" response-type="arraybuffer" animation="" class="level1 js--klok" position="-0.8 0.1 8.5" gltf-model="#klok-glb" scale="0.5 0.5 0.5"
+      model-opacity="0" feedback="white"></a-entity > -->
+    <a-entity id="js--bureau" animation="" class="js--bureau" position="3.75 0.1 10.275" gltf-model="#bureau-glb" scale="0.5 0.5 0.5" rotation="0 270 0"></a-entity>
+    <a-entity id="js--nachtkastje" animation="" class="level1 js--nachtkastje" position="2.4 0 4.7" gltf-model="#nachtkastje-glb" scale="0.5 0.5 0.5" rotation="0 0 0"></a-entity>
+    <a-entity id="js--nachtkastje" animation="" class="level1 js--nachtkastje" position="5.3 0 4.7" gltf-model="#nachtkastje-glb" scale="0.5 0.5 0.5" rotation="0 0 0"></a-entity>
+    <a-entity id="js--bed" animation="" class="js--bed" position="1.2 -0.3 5.1" gltf-model="#bed-glb" scale="0.45 0.45 0.45" rotation="0 270 0"></a-entity>
+    <a-entity id="js--chair" animation="" class="js--chair" position="2.75 0.5 10.3" gltf-model="#chair-glb" scale="0.3 0.3 0.3" rotation="0 270 0"></a-entity>
+    <a-entity id="js--table2" position="-3.45 0 7.2" gltf-model="#table2-glb" scale="0.5 0.5 0.5" rotation="0 0 0"></a-entity>
+    <a-box id="js--clock" color="#121212" position="-3.4 0.95 7.2" width="3" scale="0.3 0.3 0.3" rotation="0 90 0">
+      <a-text letterSpacing="3.75" id="js--time" value="00:00" position="0 0 0.5" align="center" scale="2 2 2"></a-text>
+
+      <a-cylinder id="js--buttonStart" class="clickable" position="-1 .5 0" height="0.5" radius="0.4" color="green"></a-cylinder>
+      <a-cylinder id="js--buttonStop" class="clickable" position="1 .5 0" height="0.5" radius="0.4" color="red"></a-cylinder>
+    </a-box>
+    <a-entity gltf-model="#bookcase-glb" position="-2 0 12.5" scale="0.5 0.5 0.5" rotation="0 0 0" model-material="shader:flat">
+      <a-box class="js--bookcase__progress_book" scale="0.3 0.8 0.8" position="1.1 3.8 -0.58" color="white" material="opacity:0"></a-box>
+      <a-box class="js--bookcase__progress_book" scale="0.3 0.8 0.8" position="0.7 3.8 -0.53" color="white" material="opacity:0"></a-box>
+      <a-box class="js--bookcase__progress_book" scale="0.3 0.8 0.8" position="0.3 3.8 -0.6" color="white" material="opacity:0"></a-box>
+      <a-box class="js--bookcase__progress_book" scale="0.3 0.8 0.8" position="-0.1 3.8 -0.35" color="white" material="opacity:0"></a-box>
+      <a-box class="js--bookcase__progress_book" scale="0.3 0.8 0.8" position="-0.5 3.8 -0.5" color="white" material="opacity:0"></a-box>
+      <a-box class="js--bookcase__progress_book" scale="0.3 0.8 0.8" position="-0.8 3.8 -0.45" color="white" material="opacity:0"></a-box>
+      <a-box class="js--bookcase__progress_book" scale="0.3 0.8 0.8" position="-1.1 3.8 -0.58" color="white" material="opacity:0"></a-box>
+
+      <a-box class="js--bookcase__progress_book" scale="0.3 0.8 0.8" position="1.1 2.7 -0.58" color="white" material="opacity:0"></a-box>
+      <a-box class="js--bookcase__progress_book" scale="0.3 0.8 0.8" position="0.7 2.7 -0.53" color="white" material="opacity:0"></a-box>
+      <a-box class="js--bookcase__progress_book" scale="0.3 0.8 0.8" position="0.3 2.7 -0.6" color="white" material="opacity:0"></a-box>
+      <a-box class="js--bookcase__progress_book" scale="0.3 0.8 0.8" position="-0.1 2.7 -0.35" color="white" material="opacity:0"></a-box>
+      <a-box class="js--bookcase__progress_book" scale="0.3 0.8 0.8" position="-0.8 2.5 -0.5" color="white" rotation="0 0 90" material="opacity:0"></a-box>
+      <a-box class="js--bookcase__progress_book" scale="0.3 0.8 0.8" position="-0.8 2.8 -0.45" color="white" rotation="0 0 90" material="opacity:0"></a-box>
+      <a-box class="js--bookcase__progress_book" scale="0.3 0.8 0.8" position="-0.8 3.1 -0.58" color="white" rotation="0 0 90" material="opacity:0"></a-box>
+
+      <a-box class="js--bookcase__progress_book" scale="0.3 0.8 0.8" position="0.7 1.4 -0.5" color="white" rotation="0 0 90" material="opacity:0"></a-box>
+      <a-box class="js--bookcase__progress_book" scale="0.3 0.8 0.8" position="0.7 1.7 -0.45" color="white" rotation="0 0 90" material="opacity:0"></a-box>
+      <a-box class="js--bookcase__progress_book" scale="0.3 0.8 0.8" position="0.7 2 -0.58" color="white" rotation="0 0 90" material="opacity:0"></a-box>
+      <a-box class="js--bookcase__progress_book" scale="0.3 0.8 0.8" position="-0.038 1.6 -0.52" color="white" rotation="0 0 -15" material="opacity:0"></a-box>
+      <a-box class="js--bookcase__progress_book" scale="0.3 0.8 0.8" position="-0.5 1.6 -0.53" color="white" material="opacity:0"></a-box>
+      <a-box class="js--bookcase__progress_book" scale="0.3 0.8 0.8" position="-0.8 1.6 -0.6" color="white" material="opacity:0"></a-box>
+      <a-box class="js--bookcase__progress_book" scale="0.3 0.8 0.8" position="-1.1 1.6 -0.35" color="white" material="opacity:0"></a-box>
+    </a-entity>
+  </a-scene>
+</body>
+</html>
